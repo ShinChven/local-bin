@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Check if arguments were passed
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <database_name> <username>"
+  exit 1
+fi
+
+# Set variables from command line arguments
+db_name="$1"
+user_name="$2"
+
+# Generate a random password
+password=$(openssl rand -base64 12)
+
+# Create the MySQL script
+echo "CREATE DATABASE IF NOT EXISTS \`$db_name\` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE USER '$user_name'@'%' IDENTIFIED BY '$password';
+GRANT ALL PRIVILEGES ON \`$db_name\`.* TO '$user_name'@'%';"
